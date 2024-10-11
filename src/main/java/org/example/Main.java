@@ -3,6 +3,7 @@ package org.example;
 import org.example.config.DBConfig;
 import org.example.dao.*;
 import org.example.models.assegurado.Carro;
+import org.example.models.assegurado.Endereco;
 import org.example.models.assegurado.Pessoa;
 
 import java.sql.SQLException;
@@ -11,7 +12,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws SQLException {
         DBConfig db = new DBConfig("jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL","RM555357","200805");
-        PessoaDao pessoaDao = new PessoaImpl(db.getConnection());
+        PessoaDao pessoaDao = new PessoaDaoImpl(db.getConnection());
 
         Pessoa p1 = new Pessoa("Gabriel", 2002,"email@gmail.com","11912345678","12311111111");
 //        pessoaDao.create(p1);
@@ -33,6 +34,21 @@ public class Main {
 //        c1.setAno(2022);
 //        c1Dao.update(c1);
 //        c1Dao.delete(c1.getId());
+
+        EnderecoDao enderecoDao = new EnderecoDaoImpl(db.getConnection());
+        Endereco e1 = new Endereco(2L,"Rua 1","210","Alto do Taquaral","MG","Cassia","06710400",p1.getCpf());
+
+//        enderecoDao.create(e1);
+//        List<Endereco> enderecosSalvos = enderecoDao.readAll();
+//        for ( Endereco enderecoSalvo : enderecosSalvos){
+//            System.out.println(enderecoSalvo.toString());
+//        }
+//        e1.setCep("05710500");
+//        enderecoDao.update(e1);
+        enderecoDao.delete(e1.getId());
+
+
+
 
     }
 }

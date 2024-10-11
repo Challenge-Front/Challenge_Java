@@ -46,4 +46,50 @@ public class Endereco {
     public String getCpfCliente() {
         return cpfCliente;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public void setEstadoUf(String estadoUf) {
+        this.estadoUf = estadoUf;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public void setCpfCliente(String cpfCliente) {
+        this.cpfCliente = cpfCliente;
+    }
+
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "id=" + id +
+                ", logradouro='" + logradouro + '\'' +
+                ", numero='" + numero + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", estadoUf='" + estadoUf + '\'' +
+                ", cep='" + cep + '\'' +
+                ", cpfCliente='" + cpfCliente + '\'' +
+                '}';
+    }
 }

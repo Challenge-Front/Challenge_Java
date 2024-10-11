@@ -6,10 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PessoaImpl implements PessoaDao {
+public class PessoaDaoImpl implements PessoaDao {
     private final Connection connection;
 
-    public PessoaImpl(Connection connection) {
+    public PessoaDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
