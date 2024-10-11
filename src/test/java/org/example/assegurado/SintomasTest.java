@@ -1,5 +1,7 @@
 package org.example.assegurado;
 
+import org.example.models.assegurado.Luzes;
+import org.example.models.assegurado.Sintomas;
 import org.junit.jupiter.api.Test;
 
 public class SintomasTest {

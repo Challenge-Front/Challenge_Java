@@ -1,5 +1,6 @@
 package org.example.assegurado;
 
+import org.example.models.assegurado.Avaliacao;
 import org.junit.jupiter.api.Test;
 
 public class AvaliacaoTest {

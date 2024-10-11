@@ -1,16 +1,16 @@
 package org.example.dao;
 
-import org.example.assegurado.Carro;
+import org.example.models.assegurado.Carro;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface CarroDao {
-    void create(Carro c1) throws SQLException;
+    void create(Carro c1);
 
-    List<Carro> readAll() throws SQLException;
+    List<Carro> readAll();
 
-    void update(Carro c1) throws SQLException;
+    void update(Carro c1);
 
-    void delete(String placa) throws SQLException;
+    void delete(Long id);
 }

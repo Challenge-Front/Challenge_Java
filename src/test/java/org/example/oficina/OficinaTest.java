@@ -1,6 +1,7 @@
 package org.example.oficina;
 
-import org.example.assegurado.Avaliacao;
+import org.example.models.assegurado.Avaliacao;
+import org.example.models.oficina.Oficina;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

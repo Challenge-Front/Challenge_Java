@@ -1,8 +1,8 @@
 package org.example;
 
-import org.example.assegurado.Carro;
-import org.example.assegurado.Luzes;
-import org.example.assegurado.Pessoa;
+import org.example.models.assegurado.Carro;
+import org.example.models.assegurado.Luzes;
+import org.example.models.assegurado.Pessoa;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

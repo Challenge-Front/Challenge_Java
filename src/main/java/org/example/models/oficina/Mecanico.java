@@ -1,6 +1,6 @@
-package org.example.oficina;
+package org.example.models.oficina;
 
-import org.example.assegurado.Pessoa;
+import org.example.models.assegurado.Pessoa;
 
 public class Mecanico extends Pessoa {
 

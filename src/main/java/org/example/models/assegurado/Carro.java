@@ -1,4 +1,4 @@
-package org.example.assegurado;
+package org.example.models.assegurado;
 
 public class Carro {
     private Long id;
@@ -47,6 +47,30 @@ public class Carro {
         return preDiagnostico;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public void setCpfDono(String cpfDono) {
+        this.cpfDono = cpfDono;
+    }
+
     public void setPreDiagnostico(String preDiagnostico) {
         this.preDiagnostico = preDiagnostico;
     }
@@ -69,4 +93,15 @@ public class Carro {
         return quilometragemAtual > 10000 ? "Há necessidade de revisão" : "Não há necessidade de revisão";
     }
 
+    @Override
+    public String toString() {
+        return "Carro{" +
+                "cpfDono='" + cpfDono + '\'' +
+                ", ano=" + ano +
+                ", placa='" + placa + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", marca='" + marca + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

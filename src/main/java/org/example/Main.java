@@ -1,8 +1,9 @@
 package org.example;
 
-import org.example.assegurado.*;
 import org.example.config.DBConfig;
 import org.example.dao.*;
+import org.example.models.assegurado.Carro;
+import org.example.models.assegurado.Pessoa;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -21,5 +22,17 @@ public class Main {
 //        p1.setEmail("gabriel@gmail.com");
 //        pessoaDao.update(p1);
 //        pessoaDao.delete(p1.getCpf(),"1");
+
+        CarroDao c1Dao = new CarroDaoImpl(db.getConnection());
+        Carro c1 = new Carro(1L,"Volkswagen","Jetta","ABC1234",2021,p1.getCpf());
+//        c1Dao.create(c1);
+//        List<Carro> carrosSalvos = c1Dao.readAll();
+//        for (Carro carroSalvo : carrosSalvos) {
+//            System.out.println(carroSalvo.toString());
+//        }
+//        c1.setAno(2022);
+//        c1Dao.update(c1);
+//        c1Dao.delete(c1.getId());
+
     }
 }

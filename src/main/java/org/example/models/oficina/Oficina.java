@@ -1,5 +1,4 @@
-package org.example.oficina;
-import org.example.assegurado.Avaliacao;
+package org.example.models.oficina;
 
 public class Oficina {
     private Long endereco;

@@ -1,6 +1,6 @@
 package org.example.dao;
 
-import org.example.assegurado.Pessoa;
+import org.example.models.assegurado.Pessoa;
 
 import java.sql.*;
 import java.util.ArrayList;

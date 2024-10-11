@@ -1,7 +1,7 @@
 package org.example.oficina;
 
-import org.example.assegurado.Avaliacao;
-import org.example.assegurado.Pessoa;
+import org.example.models.oficina.Mecanico;
+import org.example.models.oficina.Oficina;
 import org.junit.jupiter.api.Test;
 
 public class MecanicoTest {

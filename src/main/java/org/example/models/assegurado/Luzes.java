@@ -1,4 +1,4 @@
-package org.example.assegurado;
+package org.example.models.assegurado;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

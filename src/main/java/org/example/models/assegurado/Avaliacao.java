@@ -1,4 +1,4 @@
-package org.example.assegurado;
+package org.example.models.assegurado;
 
 public class Avaliacao {
     private String comentario;

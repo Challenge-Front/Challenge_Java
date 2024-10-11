@@ -1,5 +1,6 @@
 package org.example.assegurado;
 
+import org.example.models.assegurado.Pessoa;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
