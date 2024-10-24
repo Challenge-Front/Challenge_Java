@@ -1,6 +1,8 @@
 package org.example.models.assegurado;
 
-public class Carro {
+import org.example.service.ICarro;
+
+public class Carro implements ICarro {
     private Long id;
     private String marca;
     private String modelo;

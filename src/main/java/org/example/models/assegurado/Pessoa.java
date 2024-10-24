@@ -1,9 +1,11 @@
 package org.example.models.assegurado;
 
 
+import org.example.service.IPessoa;
+
 import java.time.LocalDate;
 
-public class Pessoa {
+public class Pessoa implements IPessoa {
     private String nome;
     private String cpf;
     private String telefone;

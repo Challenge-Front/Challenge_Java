@@ -45,7 +45,8 @@ public class Main {
 //        }
 //        e1.setCep("05710500");
 //        enderecoDao.update(e1);
-        enderecoDao.delete(e1.getId());
+//        enderecoDao.delete(e1.getId());
+
 
 
 
