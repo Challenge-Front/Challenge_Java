@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.config.DBConnectionFactory;
 import org.example.models.oficina.Oficina;
 
 import java.sql.Connection;
@@ -9,16 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OficinaDaoImpl implements OficinaDao {
+class OficinaDaoImpl implements OficinaDao {
 
-    private final Connection connection;
-
-    public OficinaDaoImpl(Connection connection) {
-        this.connection = connection;
-    }
 
     @Override
-    public void create(Oficina o1) throws SQLException {
+    public void create(Oficina o1, Connection connection) throws SQLException {
         String sql = "insert into oficina(nome, nr_cnpj, id_endereco) values (?,?,?)";
         try {
             PreparedStatement pstat = connection.prepareStatement(sql);
@@ -33,17 +29,18 @@ public class OficinaDaoImpl implements OficinaDao {
     }
 
     @Override
-    public List<Oficina> readAll() throws SQLException {
+    public List<Oficina> readByCnpj(String cnpj) throws SQLException {
         List<Oficina> result = new ArrayList<>();
-        String sql = "select * from oficina";
-        try {
+        String sql = "select * from oficina where nr_cnpj = ?";
+        try (Connection connection = DBConnectionFactory.create().get()){
             PreparedStatement stat = connection.prepareStatement(sql);
+            stat.setString(1, cnpj);
             ResultSet rs = stat.executeQuery();
             while(rs.next()){
                 String nome = rs.getString("nome");
-                String cpnj = rs.getString("nr_cpnj");
+                String cpnjRs = rs.getString("nr_cpnj");
                 Long endereco = rs.getLong("id_endereco");
-                result.add(new Oficina(endereco,nome,cpnj));
+                result.add(new Oficina(endereco,nome,cpnjRs));
             }
             rs.close();
             stat.close();
@@ -54,7 +51,7 @@ public class OficinaDaoImpl implements OficinaDao {
     }
 
     @Override
-    public void update(Oficina o1) throws SQLException {
+    public void update(Oficina o1, Connection connection) throws SQLException {
         String sql = "update oficina set nome = ?, endereco = ? where nr_cnpj = ?";
         try {
             PreparedStatement pstat = connection.prepareStatement(sql);
@@ -69,7 +66,7 @@ public class OficinaDaoImpl implements OficinaDao {
     }
 
     @Override
-    public void delete(String cnpj, String cpf) throws SQLException {
+    public void delete(String cnpj, String cpf, Connection connection) throws SQLException {
         String sql = "delete from oficina where nr_cpf = ?";
         String sql2 = "delete from mecanico where nr_cnpj = ?";
         try{

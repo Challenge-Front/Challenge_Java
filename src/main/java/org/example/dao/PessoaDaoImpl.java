@@ -1,20 +1,17 @@
 package org.example.dao;
 
+import org.example.config.DBConnectionFactory;
 import org.example.models.assegurado.Pessoa;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PessoaDaoImpl implements PessoaDao {
-    private final Connection connection;
+class PessoaDaoImpl implements PessoaDao {
 
-    public PessoaDaoImpl(Connection connection) {
-        this.connection = connection;
-    }
 
     @Override
-    public void create(Pessoa p1){
+    public void create(Pessoa p1, Connection connection){
         String sql = "INSERT INTO cliente(nm_completo, nr_cpf, idade, email, nr_telefone) VALUES (?,?,?,?,?)";
         try {
             PreparedStatement pstat = connection.prepareStatement(sql);
@@ -37,15 +34,16 @@ public class PessoaDaoImpl implements PessoaDao {
     }
 
     @Override
-    public List<Pessoa> readAll(){
+    public List<Pessoa> readByCpf(String cpf){
         List<Pessoa> result = new ArrayList<>();
-        String sql = "SELECT * FROM cliente";
-        try {
-            Statement stat = connection.createStatement();
+        String sql = "SELECT * FROM cliente where nr_cpf = ?";
+        try (Connection connection = DBConnectionFactory.create().get()){
+            PreparedStatement stat = connection.prepareStatement(sql);
+            stat.setString(1, cpf);
             ResultSet rs = stat.executeQuery(sql);
 
             while (rs.next()) {
-                String cpf = rs.getString("nr_cpf");
+                String nr_cpf = rs.getString("nr_cpf");
                 String nome = rs.getString("nm_completo");
 
                 // Converte a idade de String para int
@@ -55,7 +53,7 @@ public class PessoaDaoImpl implements PessoaDao {
                 String telefone = rs.getString("nr_telefone");
 
                 // Adiciona um novo objeto Pessoa com a idade como int
-                result.add(new Pessoa(nome, idade, email, telefone, cpf));
+                result.add(new Pessoa(nome, idade, email, telefone, nr_cpf));
             }
 
             rs.close();
@@ -70,7 +68,7 @@ public class PessoaDaoImpl implements PessoaDao {
 
 
     @Override
-    public void update(Pessoa p1){
+    public void update(Pessoa p1, Connection connection){
         String sql = "UPDATE cliente SET nm_completo = ?, idade = ?, email = ?, nr_telefone = ? WHERE nr_cpf = ?";
         try{
             PreparedStatement stat = connection.prepareStatement(sql);
@@ -85,10 +83,8 @@ public class PessoaDaoImpl implements PessoaDao {
             stat.setString(4, p1.getTelefone());
             stat.setString(5, p1.getCpf());
 
-            // Executa a atualização
             stat.executeUpdate();
 
-            // Fecha o PreparedStatement
             stat.close();
 
             System.out.println("Dados alterados com sucesso");
@@ -99,7 +95,7 @@ public class PessoaDaoImpl implements PessoaDao {
 
 
     @Override
-    public void delete(String cpf, String placa){
+    public void delete(String cpf, String placa, Connection connection){
         String sql = "DELETE FROM cliente WHERE nr_cpf = ?";
         String sql2 = "DELETE FROM veiculo WHERE nr_placa = ?";
         try {

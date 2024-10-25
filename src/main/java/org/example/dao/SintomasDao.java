@@ -2,13 +2,12 @@ package org.example.dao;
 
 import org.example.models.assegurado.Sintomas;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface SintomasDao {
-    void create(Sintomas s1);
 
+    List<Sintomas> readByPlaca(String cpf) throws SQLException;
 
-    List<Sintomas> readAll();
-
-    void delete(String id);
 }

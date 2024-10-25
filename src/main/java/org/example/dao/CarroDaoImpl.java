@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.config.DBConnectionFactory;
 import org.example.models.assegurado.Carro;
 
 import java.sql.Connection;
@@ -9,16 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarroDaoImpl implements CarroDao{
+class CarroDaoImpl implements CarroDao{
 
-    private final Connection connection;
-
-    public CarroDaoImpl(Connection connection) {
-        this.connection = connection;
-    }
 
     @Override
-    public void create(Carro c1){
+    public void create(Carro c1,Connection connection){
         String sql = "insert into veiculo (id_veiculo, marca, ano, modelo, nr_placa, nr_cpf) values (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -40,14 +36,15 @@ public class CarroDaoImpl implements CarroDao{
     }
 
     @Override
-    public List<Carro> readAll() {
+    public List<Carro> readAllById(String cpfDono) {
         List<Carro> result = new ArrayList<>();
-        String sql = "select * from veiculo";
-        try {
+        String sql = "select * from veiculo where nr_cpf=?";
+        try (Connection connection = DBConnectionFactory.create().get()){
             PreparedStatement stat = connection.prepareStatement(sql);
+            stat.setString(1, cpfDono);
             ResultSet rs = stat.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 Long id = rs.getLong("id_veiculo");
                 String marca = rs.getString("marca");
                 int ano = rs.getInt("ano");
@@ -55,19 +52,20 @@ public class CarroDaoImpl implements CarroDao{
                 String placa = rs.getString("nr_placa");
                 String cpf = rs.getString("nr_cpf");
 
-                result.add(new Carro(id,marca, modelo,placa, ano, cpf));
+                result.add(new Carro(id, marca, modelo, placa, ano, cpf));
             }
 
-            stat.close();
             rs.close();
-        }catch (SQLException e){
-            throw new RuntimeException("Não foi possivel buscar os dados " + e.getMessage());
+            stat.close();
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível buscar os dados: " + e.getMessage());
         }
         return result;
     }
 
+
     @Override
-    public void update(Carro c1){
+    public void update(Carro c1,Connection connection){
         String sql = "update veiculo set  marca = ?, ano = ?, modelo = ?, nr_placa = ?, nr_cpf = ? where id_veiculo = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -90,11 +88,11 @@ public class CarroDaoImpl implements CarroDao{
     }
 
     @Override
-    public void delete(Long id){
-        String sql = "delete from veiculo where id_veiculo = ?";
+    public void delete(String placa,Connection connection){
+        String sql = "delete from veiculo where nr_placa = ?";
         try {
             PreparedStatement stat = connection.prepareStatement(sql);
-            stat.setLong(1,id);
+            stat.setString(1,placa);
             stat.executeUpdate();
             stat.close();
             System.out.println("Dados excluídos com sucesso");

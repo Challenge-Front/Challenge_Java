@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.config.DBConnectionFactory;
 import org.example.models.assegurado.Pessoa;
 import org.example.models.oficina.Mecanico;
 
@@ -10,15 +11,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MecanicoDaoImpl implements MecanicoDao{
-    private final Connection connection;
-
-    public MecanicoDaoImpl(Connection connection) {
-        this.connection = connection;
-    }
+class MecanicoDaoImpl implements MecanicoDao{
 
     @Override
-    public void create(Mecanico m1){
+    public void create(Mecanico m1, Connection connection){
         String sql = "insert into mecanico( nm_completo, nr_cpf, nr_telefone, idade, nr_cnpj) values (?,?,?,?,?)";
         try {
             PreparedStatement pstat = connection.prepareStatement(sql);
@@ -36,19 +32,20 @@ public class MecanicoDaoImpl implements MecanicoDao{
     }
 
     @Override
-    public List<Pessoa> readAll(){
+    public List<Pessoa> readByCpf(String cpf){
         List<Pessoa> result = new ArrayList<>();
-        String sql = "select * from mecanico";
-        try {
+        String sql = "select * from mecanico where nr_cpf = ?";
+        try (Connection connection = DBConnectionFactory.create().get()){
             PreparedStatement stat = connection.prepareStatement(sql);
+            stat.setString(1, cpf);
             ResultSet rs = stat.executeQuery();
             while (rs.next()){
-                String cpf = rs.getString("cpf");
+                String cpfRs = rs.getString("cpf");
                 String nome = rs.getString("nome");
                 Integer idade = rs.getInt("idade");
                 String email = rs.getString("email");
                 String telefone = rs.getString("telefone");
-                result.add(new Pessoa(nome,idade,email,telefone,cpf));
+                result.add(new Pessoa(nome,idade,email,telefone,cpfRs));
             }
             rs.close();
             stat.close();
@@ -59,7 +56,7 @@ public class MecanicoDaoImpl implements MecanicoDao{
     }
 
     @Override
-    public void update(Mecanico m1) throws SQLException {
+    public void update(Mecanico m1, Connection connection) throws SQLException {
         try {
             String sql = "update mecanico set nm_completo = ?, nr_telefone = ?, idade = ?, nr_cnpj = ?,  where nr_cpf = ?";
             PreparedStatement stat = connection.prepareStatement(sql);
@@ -76,7 +73,7 @@ public class MecanicoDaoImpl implements MecanicoDao{
     }
 
     @Override
-    public void delete(Long cpf) throws SQLException {
+    public void delete(Long cpf, Connection connection) throws SQLException {
         String sql = "delete from mecanico where cpf = ?";
         try {
             PreparedStatement stat = connection.prepareStatement(sql);

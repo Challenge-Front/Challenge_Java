@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.config.DBConnectionFactory;
 import org.example.models.assegurado.Endereco;
 
 import java.sql.Connection;
@@ -9,16 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnderecoDaoImpl implements EnderecoDao{
+class EnderecoDaoImpl implements EnderecoDao{
 
-    private final Connection connection;
-
-    public EnderecoDaoImpl(Connection connection) {
-        this.connection = connection;
-    }
 
     @Override
-    public void create(Endereco e1) {
+    public void create(Endereco e1, Connection connection) {
         String sql = "insert into endereco(id_endereco, cidade, bairro, estado, nr_residencia, nr_cep, nm_de_logradouro, nr_cpf) values(?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement stat = connection.prepareStatement(sql);
@@ -42,11 +38,12 @@ public class EnderecoDaoImpl implements EnderecoDao{
     }
 
     @Override
-    public List<Endereco> readAll() {
+    public List<Endereco> readByCpf(String cpf) {
         List<Endereco> result = new ArrayList<>();
-        String sql = "select * from endereco";
-        try{
+        String sql = "select * from endereco where nr_cpf = ?";
+        try(Connection connection = DBConnectionFactory.create().get()){
             PreparedStatement stat = connection.prepareStatement(sql);
+            stat.setString(1, cpf);
             ResultSet rs = stat.executeQuery();
             while(rs.next()){
                 Long id = rs.getLong("id_endereco");
@@ -68,7 +65,7 @@ public class EnderecoDaoImpl implements EnderecoDao{
     }
 
     @Override
-    public void update(Endereco e1) {
+    public void update(Endereco e1, Connection connection) {
         String sql = "update endereco set cidade = ?, bairro = ?, estado = ?, nr_cep = ?, nr_residencia = ?, nm_de_logradouro = ?, nr_cpf = ? where id_endereco = ?";
         try {
             PreparedStatement stat = connection.prepareStatement(sql);
@@ -92,7 +89,7 @@ public class EnderecoDaoImpl implements EnderecoDao{
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id, Connection connection) {
         String sql = "delete from endereco where id_endereco = ?";
         try{
             PreparedStatement stat = connection.prepareStatement(sql);
