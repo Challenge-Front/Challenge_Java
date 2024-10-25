@@ -5,17 +5,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConfig {
-    private final String url;
-    private final String user;
-    private final String password;
-
-    public DBConfig(String url, String user, String password) {
-        this.url = url;
-        this.user = user;
-        this.password = password;
+    private DBConfig() {
+        throw new UnsupportedOperationException();
     }
 
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url,user,password);
+    static String getUrl(){
+        return "jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL";
+    }
+
+    static String getUser(){
+        return "pf1910";
+    }
+
+    static String getPassword(){
+        return "fiap24";
     }
 }
