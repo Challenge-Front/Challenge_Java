@@ -11,7 +11,7 @@ class PessoaDaoImpl implements PessoaDao {
 
 
     @Override
-    public void create(Pessoa p1, Connection connection){
+    public Pessoa create(Pessoa p1, Connection connection){
         String sql = "INSERT INTO cliente(nm_completo, nr_cpf, idade, email, nr_telefone) VALUES (?,?,?,?,?)";
         try {
             PreparedStatement pstat = connection.prepareStatement(sql);
@@ -28,6 +28,7 @@ class PessoaDaoImpl implements PessoaDao {
             // Fecha o PreparedStatement
             pstat.close();
             System.out.println("Dados inseridos com sucesso");
+            return p1;
         }catch (SQLException e){
             throw new RuntimeException("Não foi possivel inserir os dados");
         }
@@ -68,7 +69,7 @@ class PessoaDaoImpl implements PessoaDao {
 
 
     @Override
-    public void update(Pessoa p1, Connection connection){
+    public Pessoa update(Pessoa p1, Connection connection){
         String sql = "UPDATE cliente SET nm_completo = ?, idade = ?, email = ?, nr_telefone = ? WHERE nr_cpf = ?";
         try{
             PreparedStatement stat = connection.prepareStatement(sql);
@@ -88,6 +89,7 @@ class PessoaDaoImpl implements PessoaDao {
             stat.close();
 
             System.out.println("Dados alterados com sucesso");
+            return p1;
         }catch(SQLException e){
             throw new RuntimeException("Não foi possivel alterar os dados");
         }

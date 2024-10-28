@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface PessoaDao {
 
-    void create(Pessoa p1, Connection connection);
+    Pessoa create(Pessoa p1, Connection connection);
 
     List<Pessoa> readByCpf(String cpf);
 
-    void update(Pessoa p1, Connection connection);
+    Pessoa update(Pessoa p1, Connection connection);
 
     void delete( String cpf, String placa, Connection connection);
 }
