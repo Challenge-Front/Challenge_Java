@@ -6,7 +6,6 @@ import org.example.dao.CarroDaoFactory;
 import org.example.exception.NotFoundException;
 import org.example.exception.UnsupportedServiceOperationException;
 import org.example.models.assegurado.Carro;
-import org.example.models.assegurado.Pessoa;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -3,9 +3,8 @@ package org.example.controller;
 import org.example.exception.NotFoundException;
 import org.example.exception.NotSavedException;
 import org.example.exception.UnsupportedServiceOperationException;
-import org.example.models.assegurado.Pessoa;
-import org.example.service.PessoaService;
-import org.example.service.PessoaServiceFactory;
+import org.example.models.assegurado.Carro;
+import org.example.service.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -13,25 +12,25 @@ import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.Map;
 
-@Path("/rest/cliente")
-public class PessoaController {
-    private final PessoaService pessoaService = PessoaServiceFactory.create();
+@Path("/rest/carro")
+public class CarroController {
+    private final CarroService carroService = CarroServiceFactory.create();
 
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(Pessoa input) throws UnsupportedServiceOperationException {
-        if (input.getCpf() == null) {
+    public Response add(Carro input) throws UnsupportedServiceOperationException {
+        if (input.getPlaca() == null) {
             try {
-                Pessoa pessoa = this.pessoaService.create(new Pessoa( input.getNome(), input.getDtNascimento(), input.getEmail(), input.getTelefone(), input.getCpf()));
+                Carro carro = this.carroService.create(new Carro( input.getId(), input.getMarca(), input.getModelo(), input.getPlaca(), input.getAno(), input.getCpfDono()));
                 return Response
                         .status(Response.Status.CREATED)
-                        .entity(pessoa)
+                        .entity(carro)
                         .build();
             } catch (SQLException | NotSavedException e){
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(Map.of("mensagem","erro inesperado ao tentar inserir pessoa")).build();
+                        .entity(Map.of("mensagem","erro inesperado ao tentar inserir veículo")).build();
             }
 
         } else {
@@ -39,40 +38,40 @@ public class PessoaController {
                     .entity(
                             Map.of(
                                     "mensagem",
-                                    "esse método só permite a criação de novas pessoas"))
+                                    "esse método só permite a criação de novos veículos"))
                     .build();
         }
     }
 
     @GET
-    @Path("/{cpf}")
+    @Path("/veiculos/{cpf}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll(@PathParam("cpf") String cpf) {
         return Response.status(Response.Status.OK)
-                .entity(this.pessoaService.readByCpf(cpf)).build();
+                .entity(this.carroService.readAllById(cpf)).build();
     }
 
     @PUT
     @Path("/alter/{cpf}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("cpf") String cpf, Pessoa input){
+    public Response update(@PathParam("cpf") String cpf, Carro input){
         try {
-            Pessoa updated = this.pessoaService.update(new Pessoa(input.getNome(), input.getDtNascimento(), input.getEmail(), input.getTelefone(), cpf));
+            Carro updated = this.carroService.update(new Carro( input.getId(), input.getMarca(), input.getModelo(), input.getPlaca(), input.getAno(), input.getCpfDono()));
             return Response.status(Response.Status.OK).entity(updated).build();
-        } catch (NotFoundException e) {
+        } catch (org.example.exception.NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } catch (SQLException s) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(Map.of("mensagem","erro inesperado ao tentar atualizar pessoa")).build();
+                    .entity(Map.of("mensagem","erro inesperado ao tentar atualizar o veículo")).build();
         }
     }
 
     @DELETE
-    @Path("/delete/{cpf}")
-    public Response delete(@PathParam("cpf")String cpf, String placa){
+    @Path("/delete/{placa}")
+    public Response delete(@PathParam("placa") String placa){
         try {
-            this.pessoaService.delete(cpf, placa);
+            this.carroService.delete(placa);
             return Response.status(Response.Status.NO_CONTENT).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();

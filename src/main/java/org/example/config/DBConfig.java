@@ -14,10 +14,10 @@ public class DBConfig {
     }
 
     static String getUser(){
-        return "pf1910";
+        return "RM554694";
     }
 
     static String getPassword(){
-        return "fiap24";
+        return "030906";
     }
 }
