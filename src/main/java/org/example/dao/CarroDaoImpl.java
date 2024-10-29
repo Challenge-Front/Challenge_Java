@@ -14,7 +14,7 @@ class CarroDaoImpl implements CarroDao{
 
 
     @Override
-    public void create(Carro c1,Connection connection){
+    public Carro create(Carro c1,Connection connection){
         String sql = "insert into veiculo (id_veiculo, marca, ano, modelo, nr_placa, nr_cpf) values (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -30,6 +30,7 @@ class CarroDaoImpl implements CarroDao{
 
             ps.close();
             System.out.println("Dados inseridos com sucesso");
+            return c1;
         }catch (SQLException e){
             throw new RuntimeException("Não foi possivel inserir os dados" + e.getMessage());
         }
@@ -65,7 +66,7 @@ class CarroDaoImpl implements CarroDao{
 
 
     @Override
-    public void update(Carro c1,Connection connection){
+    public Carro update(Carro c1,Connection connection){
         String sql = "update veiculo set  marca = ?, ano = ?, modelo = ?, nr_placa = ?, nr_cpf = ? where id_veiculo = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -81,6 +82,7 @@ class CarroDaoImpl implements CarroDao{
 
             ps.close();
             System.out.println("Dados alterados com sucesso");
+            return c1;
         }catch(SQLException e){
             throw new RuntimeException("Não foi possivel alterar os dados");
         }

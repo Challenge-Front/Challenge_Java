@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface CarroDao {
-    void create(Carro c1, Connection connection);
+    Carro create(Carro c1, Connection connection) throws SQLException;
 
     List<Carro> readAllById(String cpfDono);
 
-    void update(Carro c1,Connection connection);
+    Carro update(Carro c1,Connection connection) throws SQLException;
 
     void delete(String placa,Connection connection);
 }

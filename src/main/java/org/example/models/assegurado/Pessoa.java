@@ -1,8 +1,6 @@
 package org.example.models.assegurado;
 
 
-import org.example.service.IPessoa;
-
 import java.time.LocalDate;
 
 public class Pessoa implements IPessoa {

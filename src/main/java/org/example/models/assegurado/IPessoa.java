@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.models.assegurado;
 
 public interface IPessoa {
     int calculaIdade(int anoNascimento);
