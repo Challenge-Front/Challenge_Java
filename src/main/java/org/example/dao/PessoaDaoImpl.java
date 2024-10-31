@@ -11,26 +11,24 @@ class PessoaDaoImpl implements PessoaDao {
 
 
     @Override
-    public Pessoa create(Pessoa p1, Connection connection){
-        String sql = "INSERT INTO cliente(nm_completo, nr_cpf, idade, email, nr_telefone) VALUES (?,?,?,?,?)";
-        try {
-            PreparedStatement pstat = connection.prepareStatement(sql);
+    public Pessoa create(Pessoa p1, Connection connection) {
+        String sql = "INSERT INTO cliente(nr_cpf, nm_completo, email, senha, idade, nr_telefone) VALUES (?,?,?,?,?,?)";
+        try (PreparedStatement pstat = connection.prepareStatement(sql)) {
 
-            // Define os valores para os parâmetros
-            pstat.setString(1, p1.getNome());
-            pstat.setString(2, p1.getCpf());
-            pstat.setString(3, String.valueOf(p1.getIdade()));  // converte int para String
-            pstat.setString(4, p1.getEmail());
-            pstat.setString(5, p1.getTelefone());
 
-            // Executa o comando
+            pstat.setString(1, p1.getCpf());
+            pstat.setString(2, p1.getNome());
+            pstat.setString(3, p1.getEmail());
+            pstat.setString(4, p1.getSenha());
+            pstat.setInt(5, p1.getIdade());
+            pstat.setString(6, p1.getTelefone());
+
             pstat.executeUpdate();
-            // Fecha o PreparedStatement
-            pstat.close();
+
             System.out.println("Dados inseridos com sucesso");
             return p1;
-        }catch (SQLException e){
-            throw new RuntimeException("Não foi possivel inserir os dados");
+        } catch (SQLException e) {
+            throw new RuntimeException("Não foi possível inserir os dados: " + e.getMessage(), e);
         }
     }
 
@@ -41,12 +39,12 @@ class PessoaDaoImpl implements PessoaDao {
         try (Connection connection = DBConnectionFactory.create().get()){
             PreparedStatement stat = connection.prepareStatement(sql);
             stat.setString(1, cpf);
-            ResultSet rs = stat.executeQuery(sql);
+            ResultSet rs = stat.executeQuery();
 
             while (rs.next()) {
                 String nr_cpf = rs.getString("nr_cpf");
                 String nome = rs.getString("nm_completo");
-
+                String senha = rs.getString("senha");
                 // Converte a idade de String para int
                 int idade = Integer.parseInt(rs.getString("idade"));
 
@@ -54,13 +52,13 @@ class PessoaDaoImpl implements PessoaDao {
                 String telefone = rs.getString("nr_telefone");
 
                 // Adiciona um novo objeto Pessoa com a idade como int
-                result.add(new Pessoa(nome, idade, email, telefone, nr_cpf));
+                result.add(new Pessoa(nome, idade, senha, email, telefone, nr_cpf));
             }
 
             rs.close();
             stat.close();
         }catch (SQLException e){
-            throw new RuntimeException("Não foi possivel buscar os dados");
+            throw new RuntimeException("Não foi possivel buscar os dados: " + e.getMessage());
         }
 
         return result;

@@ -6,15 +6,20 @@ import java.time.LocalDate;
 public class Pessoa implements IPessoa {
     private String nome;
     private String cpf;
+    private String senha;
     private String telefone;
     private String email;
     private int idade;
     private int dtNascimento;
 
-    public Pessoa(String nome, int anoNascimento, String email, String telefone, String cpf) {
+    public Pessoa() {
+    }
+
+    public Pessoa(String nome, int anoNascimento, String senha, String email, String telefone, String cpf) {
         this.nome = nome;
         this.idade = setIdade(calculaIdade(anoNascimento));
         this.dtNascimento = anoNascimento;
+        this.senha = senha;
         this.email = email;
         this.telefone = telefone;
         this.cpf = cpf;
@@ -48,6 +53,14 @@ public class Pessoa implements IPessoa {
 
     public int getDtNascimento() {
         return dtNascimento;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public int setIdade(int idade) {

@@ -44,7 +44,7 @@ public class CarroController {
     }
 
     @GET
-    @Path("/veiculos/{cpf}")
+    @Path("/todos/{cpf}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll(@PathParam("cpf") String cpf) {
         return Response.status(Response.Status.OK)

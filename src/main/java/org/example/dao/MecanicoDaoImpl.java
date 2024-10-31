@@ -42,10 +42,11 @@ class MecanicoDaoImpl implements MecanicoDao{
             while (rs.next()){
                 String cpfRs = rs.getString("cpf");
                 String nome = rs.getString("nome");
+                String senha = rs.getString("senha");
                 Integer idade = rs.getInt("idade");
                 String email = rs.getString("email");
                 String telefone = rs.getString("telefone");
-                result.add(new Pessoa(nome,idade,email,telefone,cpfRs));
+                result.add(new Pessoa(nome,idade, senha, email,telefone,cpfRs));
             }
             rs.close();
             stat.close();

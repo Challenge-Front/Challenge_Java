@@ -20,7 +20,12 @@ public class DBConnectionImpl implements DBConnection{
                     DBConfig.getPassword()
             );
         } catch (ClassNotFoundException e) {
-            logger.severe("não foi localizada a classe Driver do Oracle");
+            logger.severe("Não foi localizada a classe Driver do Oracle");
+            throw new RuntimeException("Driver do Oracle não encontrado", e);
+        }
+
+        if (connection == null) {
+            throw new SQLException("Falha ao estabelecer a conexão com o banco de dados");
         }
 
     }
@@ -35,6 +40,7 @@ public class DBConnectionImpl implements DBConnection{
 
     @Override
     public Connection get() throws SQLException {
-        return null;
+        connection.setAutoCommit(false);
+        return connection;
     }
 }

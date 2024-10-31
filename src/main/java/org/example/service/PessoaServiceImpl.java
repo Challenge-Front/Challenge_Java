@@ -18,7 +18,7 @@ public class PessoaServiceImpl implements PessoaService{
 
     @Override
     public Pessoa create(Pessoa pessoa) throws UnsupportedServiceOperationException, SQLException {
-        if(pessoa.getCpf() == null){
+        if(pessoa.getCpf() != null){
             Connection connection = DBConnectionFactory.create().get();
             try {
                 pessoa = this.dao.create(pessoa, connection);
