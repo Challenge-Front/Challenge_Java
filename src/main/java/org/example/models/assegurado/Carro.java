@@ -9,7 +9,10 @@ public class Carro implements ICarro {
     private String cpfDono;
     private String preDiagnostico;
 
-    public Carro(Long id,String marca, String modelo, String placa, int ano, String cpfDono) {
+    public Carro() {
+    }
+
+    public Carro(Long id, String marca, String modelo, String placa, int ano, String cpfDono) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;

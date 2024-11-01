@@ -14,7 +14,7 @@ import java.util.List;
 class MecanicoDaoImpl implements MecanicoDao{
 
     @Override
-    public void create(Mecanico m1, Connection connection){
+    public Mecanico create(Mecanico m1, Connection connection){
         String sql = "insert into mecanico( nm_completo, nr_cpf, nr_telefone, idade, nr_cnpj) values (?,?,?,?,?)";
         try {
             PreparedStatement pstat = connection.prepareStatement(sql);
@@ -26,14 +26,16 @@ class MecanicoDaoImpl implements MecanicoDao{
             pstat.executeUpdate();
             pstat.close();
             System.out.println("Dados inseridos com sucesso");
+
         }catch (SQLException e){
             System.out.println("Não foi possível inserir os dados devido ao erro: " + e.getMessage());
         }
+        return m1;
     }
 
     @Override
-    public List<Pessoa> readByCpf(String cpf){
-        List<Pessoa> result = new ArrayList<>();
+    public List<Mecanico> readByCpf(String cpf){
+        List<Mecanico> result = new ArrayList<>();
         String sql = "select * from mecanico where nr_cpf = ?";
         try (Connection connection = DBConnectionFactory.create().get()){
             PreparedStatement stat = connection.prepareStatement(sql);
@@ -44,9 +46,10 @@ class MecanicoDaoImpl implements MecanicoDao{
                 String nome = rs.getString("nome");
                 String senha = rs.getString("senha");
                 Integer idade = rs.getInt("idade");
-                String email = rs.getString("email");
+                String email = "";
                 String telefone = rs.getString("telefone");
-                result.add(new Pessoa(nome,idade, senha, email,telefone,cpfRs));
+                String cnpj = rs.getString("cnpj");
+                result.add(new Mecanico(nome,idade, senha, email,telefone,cpfRs, cnpj));
             }
             rs.close();
             stat.close();
@@ -57,7 +60,7 @@ class MecanicoDaoImpl implements MecanicoDao{
     }
 
     @Override
-    public void update(Mecanico m1, Connection connection) throws SQLException {
+    public Mecanico update(Mecanico m1, Connection connection) throws SQLException {
         try {
             String sql = "update mecanico set nm_completo = ?, nr_telefone = ?, idade = ?, nr_cnpj = ?,  where nr_cpf = ?";
             PreparedStatement stat = connection.prepareStatement(sql);
@@ -68,17 +71,19 @@ class MecanicoDaoImpl implements MecanicoDao{
             stat.setString(5, m1.getCpf());
             stat.executeUpdate();
             stat.close();
+            System.out.println("Dados alterados com sucesso");
         }catch(SQLException e){
             System.out.println("Não foi possível alterar os dados devido ao erro: " + e.getMessage());
         }
+        return m1;
     }
 
     @Override
-    public void delete(Long cpf, Connection connection) throws SQLException {
+    public void delete(String cpf, Connection connection) throws SQLException {
         String sql = "delete from mecanico where cpf = ?";
         try {
             PreparedStatement stat = connection.prepareStatement(sql);
-            stat.setLong(1,cpf);
+            stat.setString(1,cpf);
             stat.executeUpdate();
         }catch(SQLException e){
             System.out.println("Não foi possível excluir os dados devido ao erro: " + e.getMessage());

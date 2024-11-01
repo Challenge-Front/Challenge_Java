@@ -22,39 +22,29 @@ public class PessoaController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(Pessoa input) throws UnsupportedServiceOperationException {
-        if (input.getCpf() != null) {
-            if (input.getCpf() != null) {  // Condição corrigida
-                try {
-                    Pessoa pessoa = this.pessoaService.create(new Pessoa(input.getNome(), input.getDtNascimento(), input.getSenha(), input.getEmail(), input.getTelefone(), input.getCpf()));
-                    return Response
-                            .status(Response.Status.CREATED)
-                            .entity(pessoa)
-                            .build();
-                } catch (SQLException e) {
-                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                            .entity(Map.of("mensagem", "erro inesperado ao tentar inserir pessoa"))
-                            .build();
-                } catch (NotSavedException e) {
-                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                            .entity(Map.of("mensagem", "não foi possível salvar a pessoa"))
-                            .build();
-                } catch (UnsupportedServiceOperationException e) {
-                    return Response.status(Response.Status.BAD_REQUEST)
-                            .entity(Map.of("mensagem", "operação não suportada"))
-                            .build();
-                }
-            } else {
+        if (input.getCpf() != null) {  // Condição corrigida
+            try {
+                Pessoa pessoa = this.pessoaService.create(new Pessoa(input.getNome(), input.getDtNascimento(), input.getSenha(), input.getEmail(), input.getTelefone(), input.getCpf()));
+                return Response
+                        .status(Response.Status.CREATED)
+                        .entity(pessoa)
+                        .build();
+            } catch (SQLException e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(Map.of("mensagem", "erro inesperado ao tentar inserir pessoa"))
+                        .build();
+            } catch (NotSavedException e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(Map.of("mensagem", "não foi possível salvar a pessoa"))
+                        .build();
+            } catch (UnsupportedServiceOperationException e) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity(Map.of("mensagem", "esse método só permite a criação de novas pessoas"))
+                        .entity(Map.of("mensagem", "operação não suportada"))
                         .build();
             }
-
         } else {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(
-                            Map.of(
-                                    "mensagem",
-                                    "esse método só permite a criação de novas pessoas"))
+                    .entity(Map.of("mensagem", "esse método só permite a criação de novas pessoas"))
                     .build();
         }
     }

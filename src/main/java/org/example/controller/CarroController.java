@@ -21,7 +21,7 @@ public class CarroController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(Carro input) throws UnsupportedServiceOperationException {
-        if (input.getPlaca() == null) {
+        if (input.getPlaca() != null) {
             try {
                 Carro carro = this.carroService.create(new Carro( input.getId(), input.getMarca(), input.getModelo(), input.getPlaca(), input.getAno(), input.getCpfDono()));
                 return Response
