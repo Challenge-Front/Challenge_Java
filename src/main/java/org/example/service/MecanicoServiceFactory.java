@@ -4,7 +4,7 @@ public class MecanicoServiceFactory {
 
     public MecanicoServiceFactory() {
     }
-    public MecanicoService get() {
+    public static MecanicoService get() {
         return new MecanicoServiceImpl();
     }
 }

@@ -52,12 +52,12 @@ public class CarroController {
     }
 
     @PUT
-    @Path("/alter/{cpf}")
+    @Path("/alter/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("cpf") String cpf, Carro input){
+    public Response update(@PathParam("id") Long id, Carro input){
         try {
-            Carro updated = this.carroService.update(new Carro( input.getId(), input.getMarca(), input.getModelo(), input.getPlaca(), input.getAno(), input.getCpfDono()));
+            Carro updated = this.carroService.update(new Carro( id, input.getMarca(), input.getModelo(), input.getPlaca(), input.getAno(), input.getCpfDono()));
             return Response.status(Response.Status.OK).entity(updated).build();
         } catch (org.example.exception.NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();

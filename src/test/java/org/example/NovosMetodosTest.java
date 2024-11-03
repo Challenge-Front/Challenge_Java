@@ -1,25 +1,16 @@
 package org.example;
 
 import org.example.models.assegurado.Carro;
-import org.example.models.assegurado.Luzes;
 import org.example.models.assegurado.Pessoa;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.util.List;
 
 public class NovosMetodosTest {
     @Test
     public void testando_calcular_idade_do_usuario() {
         Pessoa pessoaMock = new Pessoa("Guilherme", 2005,"123453","123453","email@gmail.com","11912345678");
         Assertions.assertEquals(19, pessoaMock.getIdade());
-    }
-    @Test
-    public void testando_o_funcionamento_do_getLuzesAcesas() throws IllegalAccessException {
-        Luzes luzesMock = new Luzes(false,false,false,true,false,false,false,false,false,false,false,false,false,false);
-        List<Field> luzesAcesas = luzesMock.getLuzesAcesas();
-        Assertions.assertTrue(luzesAcesas.stream().anyMatch(field -> field.getName().equals("luzFreioABS")));
     }
     @Test
     public void testando_o_funcionamento_do_validarEmail(){

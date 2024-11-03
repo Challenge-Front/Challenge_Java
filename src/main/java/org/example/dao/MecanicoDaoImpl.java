@@ -42,13 +42,13 @@ class MecanicoDaoImpl implements MecanicoDao{
             stat.setString(1, cpf);
             ResultSet rs = stat.executeQuery();
             while (rs.next()){
-                String cpfRs = rs.getString("cpf");
-                String nome = rs.getString("nome");
-                String senha = rs.getString("senha");
+                String cpfRs = rs.getString("nr_cpf");
+                String nome = rs.getString("nm_completo");
+                String senha = "";
                 Integer idade = rs.getInt("idade");
                 String email = "";
-                String telefone = rs.getString("telefone");
-                String cnpj = rs.getString("cnpj");
+                String telefone = rs.getString("nr_telefone");
+                String cnpj = rs.getString("nr_cnpj");
                 result.add(new Mecanico(nome,idade, senha, email,telefone,cpfRs, cnpj));
             }
             rs.close();
@@ -62,7 +62,7 @@ class MecanicoDaoImpl implements MecanicoDao{
     @Override
     public Mecanico update(Mecanico m1, Connection connection) throws SQLException {
         try {
-            String sql = "update mecanico set nm_completo = ?, nr_telefone = ?, idade = ?, nr_cnpj = ?,  where nr_cpf = ?";
+            String sql = "update mecanico set nm_completo = ?, nr_telefone = ?, idade = ?, nr_cnpj = ?  where nr_cpf = ?";
             PreparedStatement stat = connection.prepareStatement(sql);
             stat.setString(1, m1.getNome());
             stat.setString(2, m1.getTelefone());
@@ -80,7 +80,7 @@ class MecanicoDaoImpl implements MecanicoDao{
 
     @Override
     public void delete(String cpf, Connection connection) throws SQLException {
-        String sql = "delete from mecanico where cpf = ?";
+        String sql = "delete from mecanico where nr_cpf = ?";
         try {
             PreparedStatement stat = connection.prepareStatement(sql);
             stat.setString(1,cpf);

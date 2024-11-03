@@ -1,18 +1,21 @@
 package org.example.models.oficina;
 
 public class Oficina {
-    private Long endereco;
+    private String endereco;
     private String nome;
     private String cnpj;
     private String listaDeServicos;
 
-    public Oficina(Long endereco, String nome, String cnpj) {
+    public Oficina() {
+    }
+
+    public Oficina(String endereco, String nome, String cnpj) {
         this.endereco = endereco;
         this.nome = nome;
         setCnpj(cnpj);
     }
 
-    public Long getEndereco() {
+    public String getEndereco() {
         return endereco;
     }
 

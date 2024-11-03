@@ -14,18 +14,19 @@ class OficinaDaoImpl implements OficinaDao {
 
 
     @Override
-    public void create(Oficina o1, Connection connection) throws SQLException {
-        String sql = "insert into oficina(nome, nr_cnpj, id_endereco) values (?,?,?)";
+    public Oficina create(Oficina o1, Connection connection) throws SQLException {
+        String sql = "insert into oficina(nome, nr_cnpj, endereco) values (?,?,?)";
         try {
             PreparedStatement pstat = connection.prepareStatement(sql);
             pstat.setString(1, o1.getNome());
             pstat.setString(2, o1.getCnpj());
-            pstat.setLong(3, o1.getEndereco());
+            pstat.setString(3, o1.getEndereco());
             pstat.executeUpdate();
             pstat.close();
         }catch (SQLException e){
             System.out.println("Não foi possível inserir os dados devido ao erro: " + e.getMessage());
         }
+        return o1;
     }
 
     @Override
@@ -38,8 +39,8 @@ class OficinaDaoImpl implements OficinaDao {
             ResultSet rs = stat.executeQuery();
             while(rs.next()){
                 String nome = rs.getString("nome");
-                String cpnjRs = rs.getString("nr_cpnj");
-                Long endereco = rs.getLong("id_endereco");
+                String cpnjRs = rs.getString("nr_cnpj");
+                String endereco = rs.getString("endereco");
                 result.add(new Oficina(endereco,nome,cpnjRs));
             }
             rs.close();
@@ -51,31 +52,31 @@ class OficinaDaoImpl implements OficinaDao {
     }
 
     @Override
-    public void update(Oficina o1, Connection connection) throws SQLException {
+    public Oficina update(Oficina o1, Connection connection) throws SQLException {
         String sql = "update oficina set nome = ?, endereco = ? where nr_cnpj = ?";
         try {
             PreparedStatement pstat = connection.prepareStatement(sql);
             pstat.setString(1, o1.getNome());
-            pstat.setLong(2, o1.getEndereco());
+            pstat.setString(2, o1.getEndereco());
             pstat.setString(3, o1.getCnpj());
             pstat.executeUpdate();
             pstat.close();
         }catch (SQLException e){
             System.out.println("Não foi possível fazer update dos devido ao erro: " + e.getMessage());
         }
+        return o1;
+
     }
 
     @Override
-    public void delete(String cnpj, String cpf, Connection connection) throws SQLException {
-        String sql = "delete from oficina where nr_cpf = ?";
-        String sql2 = "delete from mecanico where nr_cnpj = ?";
+    public void delete(String cnpj, Connection connection) throws SQLException {
+        String sql = "delete from oficina where nr_cnpj = ?";
         try{
             PreparedStatement stat = connection.prepareStatement(sql);
-            PreparedStatement stat2 = connection.prepareStatement(sql2);
             stat.setString(1,cnpj);
-            stat2.setString(1,cpf);
             stat.executeUpdate();
-            stat2.executeUpdate();
+            stat.close();
+            System.out.println("Dados excluidos com sucesso!");
         }catch (SQLException e){
             System.out.println("Não foi possível excluir os devido ao erro: " + e.getMessage());
         }
